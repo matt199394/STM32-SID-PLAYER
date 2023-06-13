@@ -1,33 +1,163 @@
-# STM32-SID-PLAYER
 SID chip (6581 and 8580) and 6502 CPU emulator, with audio output on pin PA8, for STM32 line of microcontrollers, compiled with Arduino IDE, uploaded with ST-LINK V2.
 
-Demonstration video: 
- - internal flash memory player  https://www.youtube.com/watch?v=pvWagY7ppYg
- - SD Card player                https://www.youtube.com/watch?v=dMKJ6nt50_M
- - IRQinternal version           https://www.youtube.com/watch?v=eym6_oySOKk
+  -Only PSID V2 sids, no digis, emulator is not fast enough.
+
+  -Maximum size of sid is limited by microcontrollers RAM
+
+  -Sid load address must be at $0400 or greater.
+
+  -Filter emulation is far from real SID chip, but, for me, it sound enough "SID-ish".
+
+  -Plays sid from hardcoded folders from SD CARD. Use buttons or infrared remote control (NEC protocol) to switch to next tune/file/folder.
+
+  -SID tune database can be found at  https://www.hvsc.c64.org/
+  
+Code used for emulator is found at http://rubbermallet.org/fake6502.c
+
+reSID can be found at https://en.wikipedia.org/wiki/ReSID. This is not reSID port, but i did used some parts of reSID code.
+
+
+In this fork I have added:
+- LCD SSD1306
+- rotary encoder
+- I2C controlled digital potentiometer (DS1803) to control output volume
+- voices LED (code from Nightfall Xad)
+
+Compile with Arduino IDE, uploaded with ST-LINK V2.
+
+
+SCHEMATICS for  STM32F411CE (not to scale) :
+
+irPIN --> PB13
+
+LED_VOICE_1 --> PB0 
+LED_VOICE_2 --> PB1 
+LED_VOICE_3 --> PB2 
+
+LCD_SSD1306 I2C pins 
+SCK --> PB6
+SCL --> PB7
+
+DS1803 I2C pins 
+PIN 9 --> PB7 (SCL)
+PIN 9 --> PB6 (SCK)
+
+ROTARY_ENCODER
+button --> PA4                                  
+CLK    --> PA2                         
+DT     --> PA3 
+
+
+
+            .----------.
+            |          |
+            |  SSD1306 |
+            |          |
+            .----------.
+               | |
+               | |
+               P P
+               B B
+               7 6
+  .------------------------------------------------------.                                              +----------+
+  |                                                      |--------< 3.3V  >-----------------------------| infrared |
+  | STM32F411CE                                          |--------< irPIN >-----------------------------| receiver |
+  .-----------------------|-|-|----|--|--|----|----------.--------< GND   >-----------------------------|          |
+  |  P   P P P            P P P    P  P  P   P|                                                         +----------+
+  |  A   A A A            A A A    B  B  B   A|                                     .--------------.
+  |  1   5 6 7            2 3 4    0  1  2   8.------|R1|---+---|C2|----------|12   |10            |
+  |  |   | | -- SD_MOSI   | | |    |  |  |                  |           16.-------------------.9   |
+  |  |   | ---- SD_MISO   rotary   |  |  |                  C             |     DS1803        |    | 
+  |  |   ------ SD_CLK    enc      R2 R3 R4                 1             .-------------------.    .---------------| OUDIO OUT
+  |  ---------- CS_SDARD           |  |  |                  |              1                  8
+  |                                L  L  L                 -+-
+ -+-                               E  E  E                 GND
+ GND                               D  D  D
+                                   1  2  3
+                                   |  |  |
+                                   +--+--+
+                                     GND
+
+  R1 = 100-500 Ohm
+  R2 = R3 = R4 = 390 Ohm
+  C1 = 10-100 nF
+  C2 = 10 uF
+  
+  HAVE FUN :-)
+ to control the volume by remote control (digit 8 --> down digit 9 --> up) or by a rotary encoder 
+
+
+
+SCHEMATICS for  STM32F411CE (not to scale) :
+
+irPIN --> PB13
+
+LED_VOICE_1 --> PB0 
+LED_VOICE_2 --> PB1 
+LED_VOICE_3 --> PB2 
+
+LCD_SSD1306 I2C pins 
+SCK --> PB6
+SCL --> PB7
+
+DS1803 I2C pins 
+PIN 9 --> PB7 (SCL)
+PIN 9 --> PB6 (SCK)
+
+ROTARY_ENCODER
+button --> PA4                                  
+CLK    --> PA2                         
+DT     --> PA3 
+
+
+
+            .----------.
+            |          |
+            |  SSD1306 |
+            |          |
+            .----------.
+               | |
+               | |
+               P P
+               B B
+               7 6
+  .------------------------------------------------------.                                              +----------+
+  |                                                      |--------< 3.3V  >-----------------------------| infrared |
+  | STM32F411CE                                          |--------< irPIN >-----------------------------| receiver |
+  .-----------------------|-|-|----|--|--|----|----------.--------< GND   >-----------------------------|          |
+  |  P   P P P            P P P    P  P  P   P|                                                         +----------+
+  |  A   A A A            A A A    B  B  B   A|                                     .--------------.
+  |  1   5 6 7            2 3 4    0  1  2   8.------|R1|---+---|C2|----------|12   |10            |
+  |  |   | | -- SD_MOSI   | | |    |  |  |                  |           16.-------------------.9   |
+  |  |   | ---- SD_MISO   rotary   |  |  |                  C             |     DS1803        |    | 
+  |  |   ------ SD_CLK    enc      R2 R3 R4                 1             .-------------------.    .---------------| OUDIO OUT
+  |  ---------- CS_SDARD           |  |  |                  |              1                  8
+  |                                L  L  L                 -+-
+ -+-                               E  E  E                 GND
+ GND                               D  D  D
+                                   1  2  3
+                                   |  |  |
+                                   +--+--+
+                                     GND
+
+  R1 = 100-500 Ohm
+  R2 = R3 = R4 = 390 Ohm
+  C1 = 10-100 nF
+  C2 = 10 uF
+  
  
 
+
+Demonstration video: 
+ - https://www.youtube.com/watch?v=b2ATIwBYpg0
+ 
+ 
 Much more details are in versions subfolder.
   
 HAVE FUN :-)
   
   
-PS: Special thanks:
+PS: 
+Special thanks to Branko for sharing his project ;)
 
-        - Daniel Muszynski for great help on this project. Checkout his YT page for real SID player:
-        
-        https://www.youtube.com/user/dkjm1978/
-        
-        
-        - cbm80amiga ,  Checkout his YT page for so much great stuff for Blue pill:
-        
-        https://www.youtube.com/user/cbm80amiga/
-
-
-PS2: Also thanks for people who got interested into this project:
-
-        - Edu Arana      https://www.youtube.com/watch?v=_bBsGYvaXog               - STM32F401CE PCB board
-        - Matteo         https://www.youtube.com/watch?v=mWr3eCfsWOw               - STM32F103C8 + I2C LCD screen on DIY board
-        - Noplan         https://www.youtube.com/channel/UCru3FcoymFzAeXwfSxfGPoQ  - STM32F103C8
-        - Xad Nightfall  https://www.youtube.com/watch?v=O6zrsIFlbew               - STM32F407VE dev board + LCD
         
