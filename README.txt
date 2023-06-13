@@ -95,6 +95,6 @@ HAVE FUN :-)
   
   
 PS: 
-Special thanks to Branko for sharing his project ;)
+Special thanks to Branko for the help and for sharing his project ;)
 
         
