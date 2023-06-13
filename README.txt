@@ -23,7 +23,7 @@ In this fork I have added:
 - I2C controlled digital potentiometer (DS1803) to control output volume
 - voices LED (code from Nightfall Xad)
 
-Compile with Arduino IDE, uploaded with ST-LINK V2.
+Compile with Arduino IDE, upload with ST-LINK V2.
 
 SCHEMATICS for  STM32F411CE (not to scale) :
 
