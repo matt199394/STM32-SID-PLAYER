@@ -25,69 +25,6 @@ In this fork I have added:
 
 Compile with Arduino IDE, uploaded with ST-LINK V2.
 
-
-SCHEMATICS for  STM32F411CE (not to scale) :
-
-irPIN --> PB13
-
-LED_VOICE_1 --> PB0 
-LED_VOICE_2 --> PB1 
-LED_VOICE_3 --> PB2 
-
-LCD_SSD1306 I2C pins 
-SCK --> PB6
-SCL --> PB7
-
-DS1803 I2C pins 
-PIN 9 --> PB7 (SCL)
-PIN 9 --> PB6 (SCK)
-
-ROTARY_ENCODER
-button --> PA4                                  
-CLK    --> PA2                         
-DT     --> PA3 
-
-
-
-            .----------.
-            |          |
-            |  SSD1306 |
-            |          |
-            .----------.
-               | |
-               | |
-               P P
-               B B
-               7 6
-  .------------------------------------------------------.                                              +----------+
-  |                                                      |--------< 3.3V  >-----------------------------| infrared |
-  | STM32F411CE                                          |--------< irPIN >-----------------------------| receiver |
-  .-----------------------|-|-|----|--|--|----|----------.--------< GND   >-----------------------------|          |
-  |  P   P P P            P P P    P  P  P   P|                                                         +----------+
-  |  A   A A A            A A A    B  B  B   A|                                     .--------------.
-  |  1   5 6 7            2 3 4    0  1  2   8.------|R1|---+---|C2|----------|12   |10            |
-  |  |   | | -- SD_MOSI   | | |    |  |  |                  |           16.-------------------.9   |
-  |  |   | ---- SD_MISO   rotary   |  |  |                  C             |     DS1803        |    | 
-  |  |   ------ SD_CLK    enc      R2 R3 R4                 1             .-------------------.    .---------------| OUDIO OUT
-  |  ---------- CS_SDARD           |  |  |                  |              1                  8
-  |                                L  L  L                 -+-
- -+-                               E  E  E                 GND
- GND                               D  D  D
-                                   1  2  3
-                                   |  |  |
-                                   +--+--+
-                                     GND
-
-  R1 = 100-500 Ohm
-  R2 = R3 = R4 = 390 Ohm
-  C1 = 10-100 nF
-  C2 = 10 uF
-  
-  HAVE FUN :-)
- to control the volume by remote control (digit 8 --> down digit 9 --> up) or by a rotary encoder 
-
-
-
 SCHEMATICS for  STM32F411CE (not to scale) :
 
 irPIN --> PB13
@@ -151,7 +88,7 @@ DT     --> PA3
 Demonstration video: 
  - https://www.youtube.com/watch?v=b2ATIwBYpg0
  
- 
+To control the volume by remote control use digit 8 --> volume down and digit 9 --> volume up
 Much more details are in versions subfolder.
   
 HAVE FUN :-)
