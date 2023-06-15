@@ -40,6 +40,7 @@ SCL --> PB7
 DS1803 I2C pins 
 PIN 9 --> PB7 (SCL)
 PIN 9 --> PB6 (SCK)
+PIN 5,6,7,8 --> GND
 
 ROTARY_ENCODER
 button --> PA4                                  
